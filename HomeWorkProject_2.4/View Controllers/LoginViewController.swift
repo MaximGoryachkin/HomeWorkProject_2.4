@@ -2,10 +2,15 @@
 //  MainViewController.swift
 //  HomeWorkProject_2.4
 //
-//  Created by Максим on 13.07.2021.
+//  Created by Максим on 16.07.2021.
 //
 
 import UIKit
+
+let user = User(login: "M",
+                password: "123",
+                persons: person)
+let person = Person.getPerson()[0]
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -19,31 +24,32 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Private Properties
     
-    private let login = "Maxim"
-    private let password = "123"
+    private let login = user.login
+    private let password = user.password
     
     // MARK: Override methods
     
-    override func viewWillLayoutSubviews() {
-        loginTextField.font =
-            loginTextField.font?.withSize(view.frame.width / 25)
-        passwordTextField.font =
-            passwordTextField.font?.withSize(view.frame.width / 25)
-        inButton.titleLabel?.font =
-            inButton.titleLabel?.font.withSize(view.frame.width / 15)
-        leftButton.titleLabel?.font =
-            leftButton.titleLabel?.font.withSize(view.frame.width / 25)
-        rightButton.titleLabel?.font = rightButton.titleLabel?.font.withSize(view.frame.width / 25)
-        } // Возможно это лишнее, но я пытался :)
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let welcomeViewController =
-                segue.destination as? WelcomeViewController else { return }
+    override func prepare(for segue: UIStoryboardSegue,
+                          sender: Any?) {
+        let tabBarViewController = segue.destination as? UITabBarController
         
-        welcomeViewController.label = login
+        guard let viewControllers = tabBarViewController?.viewControllers else { return }
+        
+        for viewController in viewControllers {
+            if let welcomeViewController = viewController as? WelcomeViewController {
+                welcomeViewController.label = person.firstName + " " + person.lastName
+                welcomeViewController.emoji = person.sex.rawValue
+            } else if let navigationViewController =
+                        viewController as? UINavigationController {
+                let aboutUserViewController =
+                    navigationViewController.topViewController as! BioViewController
+                aboutUserViewController.person = person
+            }
+        }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>,
+                               with event: UIEvent?) {
         super.touchesBegan(touches,with: event)
         view.endEditing(true)
     }
@@ -78,7 +84,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: Public methods
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == loginTextField {
             passwordTextField.becomeFirstResponder()
@@ -93,11 +99,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 // MARK: Extensions
 
 extension LoginViewController {
-    private func showAlert(title: String, massage: String, textField: UITextField?) {
+    private func showAlert(title: String,
+                           massage: String,
+                           textField: UITextField?) {
         let alert = UIAlertController(title: title,
                                       message: massage,
                                       preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "OK", style: .cancel) { _ in
+        let alertAction = UIAlertAction(title: "OK",
+                                        style: .cancel) { _ in
             textField?.text = ""
         }
         
