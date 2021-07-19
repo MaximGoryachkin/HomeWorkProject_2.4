@@ -10,7 +10,7 @@ import Foundation
 struct User {
     let login: String
     let password: String
-    let persons: Person
+    let person: Person
 }
 
 struct Person {
@@ -24,8 +24,7 @@ struct Person {
     let eyeColor: Color
     let photoName: String
     
-    static func getPerson() -> [Person] {
-        [
+    static func getPerson() -> Person {
             Person.init(firstName: "Maxim",
                         lastName: "Goryachkin",
                         sex: .male,
@@ -38,8 +37,7 @@ struct Person {
                                 .technology,
                                 .tourism],
                         eyeColor: .green,
-                        photoName: "logo"),
-        ]
+                        photoName: "logo")
     }
 }
 

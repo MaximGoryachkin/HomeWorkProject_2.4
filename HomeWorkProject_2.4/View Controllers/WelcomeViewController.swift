@@ -17,17 +17,15 @@ class WelcomeViewController: UIViewController {
     
     // MARK: Public properties
     
-    var label: String?
-    var emoji: String?
+    var user: User!
     
     // MARK: Override methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let label = label, let emoji = emoji else { return }
-        welcomeLabel.text = "Welcome,\n \(label)!"
-        emojiLabel.text = emoji
+        welcomeLabel.text = "Welcome,\n \(user.person.firstName + " " + user.person.lastName)!"
+        emojiLabel.text = user.person.sex.rawValue
     }
 
 }

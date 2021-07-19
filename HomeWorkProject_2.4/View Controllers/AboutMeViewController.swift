@@ -16,7 +16,7 @@ class AboutMeViewController: UIViewController {
     
     // MARK: Public properties
     
-    var person: Person?
+    var user: User!
     
     // MARK: Private properties
     
@@ -35,26 +35,26 @@ class AboutMeViewController: UIViewController {
     // MARK: Private methods
     
     private func createArray() {
-        guard let person = person else { return }
+        guard let user = user else { return }
         
-        for hobby in person.hobby {
+        for hobby in user.person.hobby {
             hobbys.append(hobby.rawValue)
         }
     }
     
     private func fillingInfo() {
-        guard let person = person else { return }
+        guard let user = user else { return }
         
         infoLabel.text = """
-            My name is \(person.firstName) \(person.lastName). I'm \(person.age) years old. Now I live in \(person.currentCity). I have a \(person.education.rawValue) education. My hobbie is \(hobbys.joined(separator: ", ")). Color of my eyes is \(person.eyeColor.rawValue)
+            My name is \(user.person.firstName) \(user.person.lastName). I'm \(user.person.age) years old. Now I live in \(user.person.currentCity). I have a \(user.person.education.rawValue) education. My hobbie is \(hobbys.joined(separator: ", ")). Color of my eyes is \(user.person.eyeColor.rawValue)
             
             """
     }
     
     private func getLogo() {
-        guard let person = person else { return }
+        guard let user = user else { return }
         
-        photo.image = UIImage(named: person.photoName)
+        photo.image = UIImage(named: user.person.photoName)
     }
 
 }

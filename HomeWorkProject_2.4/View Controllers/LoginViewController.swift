@@ -7,11 +7,6 @@
 
 import UIKit
 
-let user = User(login: "M",
-                password: "123",
-                persons: person)
-let person = Person.getPerson()[0]
-
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: IB Outlets
@@ -24,8 +19,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Private Properties
     
-    private let login = user.login
-    private let password = user.password
+    private let user = User(login: "M",
+                    password: "123",
+                    person: Person.getPerson())
     
     // MARK: Override methods
     
@@ -37,13 +33,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         for viewController in viewControllers {
             if let welcomeViewController = viewController as? WelcomeViewController {
-                welcomeViewController.label = person.firstName + " " + person.lastName
-                welcomeViewController.emoji = person.sex.rawValue
+                welcomeViewController.user = user
             } else if let navigationViewController =
                         viewController as? UINavigationController {
-                let aboutUserViewController =
+                let bioViewController =
                     navigationViewController.topViewController as! BioViewController
-                aboutUserViewController.person = person
+                bioViewController.user = user
             }
         }
     }
@@ -57,7 +52,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // MARK: IB Actions
     
     @IBAction func joinAction() {
-        if loginTextField.text == login && passwordTextField.text == password {
+        if loginTextField.text == user.login && passwordTextField.text == user.password {
             performSegue(withIdentifier: "segue", sender: nil)
         } else {
             showAlert(title: "Alarm!",
@@ -68,13 +63,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginAlert() {
         showAlert(title: "Reminder!",
-                  massage: "Your user name is \(login)",
+                  massage: "Your user name is \(user.login)",
                   textField: passwordTextField)
     }
     
     @IBAction func passwordAlert() {
         showAlert(title: "Reminder!",
-                  massage: "Your password is \(password)",
+                  massage: "Your password is \(user.password)",
                   textField: passwordTextField)
     }
     
